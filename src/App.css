@@ -1,38 +1,277 @@
+/* --- Variables CSS (Palette & Thème) --- */
+:root {
+  --primary-color: #4a90e2; /* Bleu doux */
+  --primary-hover: #357abd;
+  --background-color: #f4f7f9; /* Fond légèrement gris */
+  --card-background: #ffffff;
+  --text-color: #333;
+  --text-light: #666;
+  --border-color: #e0e0e0;
+  --success-color: #28a745; /* Vert pour Positif */
+  --success-background: #e9f5ec;
+  --danger-color: #dc3545; /* Rouge pour Négatif */
+  --danger-background: #fbe9eb;
+  --warning-color: #ffc107; /* Jaune/Orange pour Neutre */
+  --warning-background: #fff8e1;
+  --error-color: var(--danger-color);
+  --error-background: var(--danger-background);
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  --transition-speed: 0.3s;
+}
+
+/* --- Styles Globaux --- */
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Aligner en haut */
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box; /* Inclure padding dans la taille */
+}
+
 .App {
+  width: 100%;
+  max-width: 600px; /* Limiter la largeur max */
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* --- Card Principale --- */
+.sentiment-analyzer-card {
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  padding: 30px 40px;
+  box-shadow: var(--box-shadow);
+  margin-top: 30px; /* Espace en haut */
+  animation: fadeIn 0.5s ease-out;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+h1 {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.subtitle {
+    color: var(--text-light);
+    margin-bottom: 30px;
+    font-size: 0.95em;
+}
+
+/* --- Zone de Saisie --- */
+.input-area {
   display: flex;
   flex-direction: column;
+  gap: 15px; /* Espace entre textarea et bouton */
+  margin-bottom: 25px;
+}
+
+textarea {
+  width: 100%; /* Prend toute la largeur disponible */
+  padding: 12px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-family: inherit; /* Utilise la même police que le reste */
+  font-size: 1rem;
+  resize: vertical; /* Permet de redimensionner verticalement */
+  min-height: 80px;
+  box-sizing: border-box; /* Important pour que padding ne dépasse pas */
+  transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2); /* Ombre douce au focus */
+}
+
+textarea:disabled {
+    background-color: #f8f8f8;
+    cursor: not-allowed;
+}
+
+
+/* --- Bouton d'Analyse --- */
+.analyze-button {
+  display: inline-flex; /* Pour aligner icône et texte */
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  padding: 12px 25px;
+  background-color: var(--primary-color);
   color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--transition-speed), transform var(--transition-speed), box-shadow var(--transition-speed);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.App-link {
-  color: #61dafb;
+.analyze-button:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px); /* Léger soulèvement */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.analyze-button:active:not(:disabled) {
+    transform: translateY(0); /* Retour à la position initiale au clic */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+.analyze-button:disabled {
+  background-color: #a0c7e4; /* Couleur désactivée plus claire */
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* --- Spinner de Chargement --- */
+.spinner {
+  animation: spin 1s linear infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* --- Message d'Erreur --- */
+.error-message {
+  display: flex;
+  align-items: center;
+  background-color: var(--error-background);
+  color: var(--error-color);
+  border: 1px solid var(--error-color);
+  border-radius: var(--border-radius);
+  padding: 12px 15px;
+  margin-top: 20px;
+  text-align: left;
+  font-size: 0.9em;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* --- Conteneur de Résultat --- */
+.result-container {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Espace entre icône et texte */
+  border-radius: var(--border-radius);
+  padding: 20px;
+  margin-top: 25px;
+  text-align: left;
+  border-left-width: 5px; /* Barre latérale de couleur */
+  border-left-style: solid;
+  animation: slideInUp 0.5s ease-out;
+  box-shadow: 0 2px 8px rgba(0,0,0, 0.08);
+}
+
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+.result-text {
+    flex-grow: 1;
+}
+
+.sentiment-icon {
+    flex-shrink: 0; /* Empêche l'icône de rétrécir */
+}
+
+.sentiment-label {
+  margin: 0 0 5px 0;
+  font-size: 1.2em;
+}
+
+.sentiment-label strong {
+    font-weight: 600;
+}
+
+.sentiment-details {
+  margin: 0;
+  font-size: 0.85em;
+  color: var(--text-light);
+}
+
+/* Couleurs spécifiques par sentiment */
+.result-positif {
+  background-color: var(--success-background);
+  border-left-color: var(--success-color);
+}
+.result-positif .sentiment-icon { color: var(--success-color); }
+.result-positif .sentiment-label strong { color: var(--success-color); }
+
+.result-négatif {
+  background-color: var(--danger-background);
+  border-left-color: var(--danger-color);
+}
+.result-négatif .sentiment-icon { color: var(--danger-color); }
+.result-négatif .sentiment-label strong { color: var(--danger-color); }
+
+.result-neutre {
+  background-color: var(--warning-background);
+  border-left-color: var(--warning-color);
+}
+.result-neutre .sentiment-icon { color: var(--warning-color); }
+.result-neutre .sentiment-label strong { color: var(--warning-color); }
+
+
+/* --- Footer --- */
+.app-footer {
+    margin-top: 40px;
+    font-size: 0.8em;
+    color: var(--text-light);
+}
+
+.app-footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color var(--transition-speed);
+}
+
+.app-footer a:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+/* --- Responsivité --- */
+@media (max-width: 640px) {
+  body {
+      padding: 10px; /* Moins de padding sur mobile */
   }
-  to {
-    transform: rotate(360deg);
+  .sentiment-analyzer-card {
+    padding: 20px;
   }
+  h1 {
+      font-size: 1.5em;
+  }
+  .subtitle {
+      font-size: 0.9em;
+      margin-bottom: 20px;
+  }
+  .result-container {
+      flex-direction: column; /* Icône au-dessus du texte sur petit écran */
+      align-items: center;
+      text-align: center;
+      gap: 10px;
+  }
+   .result-text {
+      width: 100%; /* Prend toute la largeur */
+   }
+   .sentiment-icon {
+       margin-bottom: 10px; /* Espace après l'icône */
+   }
+
 }
