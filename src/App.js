@@ -3,9 +3,9 @@ import axios from 'axios';
 import { FaSmile, FaFrown, FaMeh, FaPaperPlane, FaSpinner, FaExclamationTriangle } from 'react-icons/fa'; // Importer les icônes
 import './App.css';
 
-const HUGGINGFACE_API_KEY = process.env.REACT_APP_HUGGINGFACE_API_KEY;
+//const HUGGINGFACE_API_KEY = process.env.REACT_APP_HUGGINGFACE_API_KEY;
 
-const API_URL = "https://api-inference.huggingface.co/models/cmarkea/distilcamembert-base-sentiment"; // <<< VÉRIFIEZ CELLE-CI
+const API_URL = process.env.REACT_APP_API_URL// <<< VÉRIFIEZ CELLE-CI
 
 const SentimentDisplay = ({ result }) => {
   if (!result) return null;
@@ -75,11 +75,6 @@ function App() {
       setError('Veuillez entrer du texte à analyser.');
       return;
     }
-    if (!HUGGINGFACE_API_KEY) {
-      setError("Erreur: Clé API Hugging Face manquante. Vérifiez vos variables d'environnement.");
-      console.error("Clé API manquante. Assurez-vous que REACT_APP_HUGGINGFACE_API_KEY est définie.");
-      return;
-    }
 
     setLoading(true);
     setError('');
@@ -88,18 +83,14 @@ function App() {
     try {
       const response = await axios.post(
         API_URL,
-        { inputs: inputText },
+        { text: inputText },
         {
-          headers: {
-            'Authorization': `Bearer ${HUGGINGFACE_API_KEY}`,
-            'Content-Type': 'application/json',
-          },
           timeout: 15000
         }
       );
 
       if (response.data && Array.isArray(response.data) && response.data.length > 0 && Array.isArray(response.data[0]) && response.data[0].length > 0) {
-
+        
           const resultsArray = response.data[0];
 
           // --- IMPORTANT : Trier les résultats par score décroissant ---
