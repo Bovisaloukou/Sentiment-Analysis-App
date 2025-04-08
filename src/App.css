@@ -15,12 +15,19 @@
     --warning-background: #fff8e1;
     --error-color: var(--danger-color);
     --error-background: var(--danger-background);
-    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-family:  'Lexend', sans-serif;
     --border-radius: 8px;
     --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     --transition-speed: 0.3s;
   }
   
+  @font-face {
+    font-family: 'Lexend';
+    font-style: normal;
+    src: url('/src/assets/fonts/Lexends/Lexend-Bold.ttf');
+    src: url('/src/assets/fonts/Lexends/Lexend-Regular.ttf');
+  }
+
   /* --- Styles Globaux --- */
   body {
     margin: 0;
@@ -50,6 +57,35 @@
     margin-top: 30px; /* Espace en haut */
     animation: fadeIn 0.5s ease-out;
   }
+
+  .sentiment-analyzer-first-card {
+    padding: 30px 40px;
+    margin-top: 30px; /* Espace en haut */
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  
+.button-commencer{
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color var(--transition-speed), transform var(--transition-speed), box-shadow var(--transition-speed);
+  margin: 10px; /* Espace au-dessus du bouton */
+  object-fit: contain; /* Ajuste l'image à la taille du bouton */
+}
+
+.button-commencer:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px); /* Léger soulèvement */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
   
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
